@@ -20,7 +20,7 @@ services:
       CENTERS_PORT: '3001'
       NEWSLETTER_URL: 'sa-news-ms'
       NEWSLETTER_PORT: '3002'
-      URL: '35.190.169.127'
+      URL: '35.229.96.221'
       USER_URL: 'sa-user-ms'
       USER_ENTRY: 'api/auth'
       USER_PORT: '3003'
