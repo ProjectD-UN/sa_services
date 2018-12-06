@@ -7,13 +7,9 @@ services:
       - sa-apollo-api
     ports:
       - 80:80
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-apollo-api:
     container_name: sa-apollo-api
-    image: menoguera/sa_apollo_api
+    image: menoguera/sa_apollo_api:marlon-v
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
@@ -28,19 +24,11 @@ services:
       USER_URL: 'sa-user-ms'
       USER_ENTRY: 'api/auth'
       USER_PORT: '3003'
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-user-db:
     container_name: sa-user-db
     image: mongo
     ports:
-      - 27018:27018
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
+      - 27017:27017
   sa-news-db:
     container_name: sa-news-db
     image: mysql:5.7
@@ -51,10 +39,6 @@ services:
       MYSQL_USER: appuser
     ports:
       - 3306:3306
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-centers-db:
     container_name: sa-centers-db
     image: mysql:5.7
@@ -65,15 +49,11 @@ services:
       MYSQL_USER: sa
     ports:
       - 3307:3307
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-user-ms:
     container_name: sa-user-ms
     image: diefrodriguezcha/sa_user_ms
     environment:
-      DATABASE: '27018'
+      DATABASE: '27017'
       DOCKER_DEPLOY: 'true'
       PORT: '3003'
       SECRET: arquisoft
@@ -81,10 +61,6 @@ services:
       - sa-user-db
     links:
       - sa-user-db
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-news-ms:
     container_name: sa-news-ms
     image: menoguera/newsletter-api
@@ -100,10 +76,6 @@ services:
       - sa-news-db
     links:
       - sa-news-db
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
   sa-centers-ms:
     container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
@@ -111,7 +83,3 @@ services:
       - sa-centers-db
     links:
       - sa-centers-db
-    labels:
-      nodo: maps
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label_ne: type=rancher-node-maps.c.proyecto-arquisoft.internal
