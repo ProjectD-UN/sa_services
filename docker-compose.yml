@@ -61,11 +61,10 @@ services:
       - sa-user-db
     links:
       - sa-user-db
-    ports:
-      - 3003:3003
   sa-news-ms:
     container_name: sa-news-ms
     image: menoguera/newsletter-api
+    command: bundle exec rails s -p 3002 -b '0.0.0.0'
     environment:
       DB_HOST: sa-news-db
       DB_NAME: railsapp
@@ -78,8 +77,6 @@ services:
       - sa-news-db
     links:
       - sa-news-db
-    ports:
-      - 3002:3002
   sa-centers-ms:
     container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
@@ -87,5 +84,3 @@ services:
       - sa-centers-db
     links:
       - sa-centers-db
-    ports:
-      - 3001:3001
