@@ -10,6 +10,7 @@ services:
   sa-apollo-api:
     container_name: sa-apollo-api
     image: menoguera/sa_apollo_api:marlon-v
+    command: npm serve
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
