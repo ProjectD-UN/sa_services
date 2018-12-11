@@ -18,9 +18,8 @@ services:
       CENTERS_URL: 'sa-centers-ms'
       CENTERS_ENTRY: 'courses-ms/resources/courses'
       CENTERS_PORT: '3001'
-      NEWSLETTER_URL: 'sa-news-ms'
-      NEWSLETTER_PORT: '3002'
-      URL: '35.196.42.82'
+      NEWSLETTERS_URL: 'sa-news-ms'
+      NEWSLETTERS_PORT: '3002'
       USER_URL: 'sa-user-ms'
       USER_ENTRY: 'api/auth'
       USER_PORT: '3003'
@@ -49,7 +48,7 @@ services:
     container_name: sa-centers-db
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: sa-centers-db
+      MYSQL_DATABASE: courses-db
       MYSQL_PASSWORD: '123'
       MYSQL_ROOT_PASSWORD: '123'
       MYSQL_USER: sa
