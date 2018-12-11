@@ -2,15 +2,14 @@ version: '3'
 services:
   sa-apollo-proxy: 
     container_name: sa-apollo-proxy
-    image: diefrodriguezcha/sa_apollo_proxy
+    image: diefrodriguezcha/sa_apollo_proxy:latest
     depends_on:
       - sa-apollo-api
     ports:
       - 80:80
   sa-apollo-api:
     container_name: sa-apollo-api
-    image: menoguera/sa_apollo_api:marlon-v
-    command: npm start
+    image: diefrodriguezcha/sa-apollov2-api:latest
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
@@ -21,10 +20,16 @@ services:
       CENTERS_PORT: '3001'
       NEWSLETTER_URL: 'sa-news-ms'
       NEWSLETTER_PORT: '3002'
-      URL: '35.229.96.221'
+      URL: '35.196.42.82'
       USER_URL: 'sa-user-ms'
       USER_ENTRY: 'api/auth'
       USER_PORT: '3003'
+    links:
+      - sa-centers-ms
+      - sa-user-ms
+      - sa-news-ms
+    expose:
+      - '5000'
   sa-user-db:
     container_name: sa-user-db
     image: mongo
@@ -56,12 +61,16 @@ services:
     environment:
       DATABASE: '27017'
       DOCKER_DEPLOY: 'true'
+      LDAP: '35.196.42.82'
+      LDAP_PORT: '389'
       PORT: '3003'
       SECRET: arquisoft
     depends_on:
       - sa-user-db
     links:
       - sa-user-db
+    expose:
+      - '3003'
   sa-news-ms:
     container_name: sa-news-ms
     image: menoguera/newsletter-api
@@ -78,6 +87,8 @@ services:
       - sa-news-db
     links:
       - sa-news-db
+    expose:
+      - '3002'
   sa-centers-ms:
     container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
@@ -85,3 +96,5 @@ services:
       - sa-centers-db
     links:
       - sa-centers-db
+    expose:
+      - '3001'
