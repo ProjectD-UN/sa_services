@@ -13,16 +13,14 @@ services:
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
-      BOT_ENTRY: 'api/'
-      BOT_PORT: '3000'
       CENTERS_URL: 'sa-centers-ms'
       CENTERS_ENTRY: 'courses-ms/resources/courses'
       CENTERS_PORT: '3001'
       NEWSLETTERS_URL: 'sa-news-ms'
       NEWSLETTERS_PORT: '3002'
-      USER_URL: 'sa-user-ms'
-      USER_ENTRY: 'api/auth'
-      USER_PORT: '3003'
+      USERS_URL: 'sa-user-ms'
+      USERS_ENTRY: 'api/auth'
+      USERS_PORT: '3003'
     links:
       - sa-centers-ms
       - sa-user-ms
