@@ -13,6 +13,8 @@ services:
   sa-apollo-api:
     container_name: sa-apollo-api
     image: diefrodriguezcha/sa-apollov2-api:latest
+    deploy:
+      replicas: 3
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
@@ -44,6 +46,8 @@ services:
   sa-news-db:
     container_name: sa-news-db
     image: mysql:5.7
+    deploy:
+      replicas: 2
     environment:
       MYSQL_DATABASE: railsapp
       MYSQL_PASSWORD: password
@@ -57,6 +61,8 @@ services:
   courses-db:
     container_name: courses-db
     image: mysql:5.7
+    deploy:
+      replicas: 2
     environment:
       MYSQL_DATABASE: courses-db
       MYSQL_PASSWORD: '123'
@@ -70,6 +76,8 @@ services:
   sa-user-ms:
     container_name: sa-user-ms
     image: diefrodriguezcha/sa_user_ms
+    deploy:
+      replicas: 3
     environment:
       DATABASE: '27017'
       DOCKER_DEPLOY: 'true'
@@ -90,6 +98,8 @@ services:
     container_name: sa-news-ms
     image: menoguera/newsletter-api
     command: bundle exec rails s -p 3002 -b '0.0.0.0'
+    deploy:
+      replicas: 3
     environment:
       DB_HOST: sa-news-db
       DB_NAME: railsapp
@@ -109,6 +119,8 @@ services:
   sa-centers-ms:
     container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
+    deploy:
+      replicas: 3
     depends_on:
       - courses-db
     links:
