@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   sa-apollo-proxy: 
     container_name: sa-apollo-proxy
@@ -11,10 +11,7 @@ services:
         io.rancher.container.pull_image: always
         io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-apollo-api:
-    container_name: sa-apollo-api
     image: diefrodriguezcha/sa-apollov2-api:latest
-    deploy:
-      replicas: 3
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
@@ -36,7 +33,6 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-user-db:
-    container_name: sa-user-db
     image: mongo
     ports:
       - 27017:27017
@@ -44,10 +40,7 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-news-db:
-    container_name: sa-news-db
     image: mysql:5.7
-    deploy:
-      replicas: 2
     environment:
       MYSQL_DATABASE: railsapp
       MYSQL_PASSWORD: password
@@ -59,10 +52,7 @@ services:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
   courses-db:
-    container_name: courses-db
     image: mysql:5.7
-    deploy:
-      replicas: 2
     environment:
       MYSQL_DATABASE: courses-db
       MYSQL_PASSWORD: '123'
@@ -74,10 +64,7 @@ services:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
   sa-user-ms:
-    container_name: sa-user-ms
     image: diefrodriguezcha/sa_user_ms
-    deploy:
-      replicas: 3
     environment:
       DATABASE: '27017'
       DOCKER_DEPLOY: 'true'
@@ -95,11 +82,8 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-news-ms:
-    container_name: sa-news-ms
     image: menoguera/newsletter-api
     command: bundle exec rails s -p 3002 -b '0.0.0.0'
-    deploy:
-      replicas: 3
     environment:
       DB_HOST: sa-news-db
       DB_NAME: railsapp
@@ -117,10 +101,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: nnews=true
       io.rancher.container.pull_image: always
   sa-centers-ms:
-    container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
-    deploy:
-      replicas: 3
     depends_on:
       - courses-db
     links:
