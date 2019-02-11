@@ -1,0 +1,40 @@
+version: '2'
+services:
+  sa-apollo-wa:
+    image: menoguera/sa-front-web 
+    command: 'npm start'
+    ports:
+      - '4200:4200' 
+    expose:
+      - '4200' 
+    labels:
+      io.rancher.scheduler.global: true
+      io.rancher.scheduler.affinity:host_label_ne: nofront=true
+      io.rancher.container.pull_image: always
+
+version: '2'
+services:
+  sa-apollo-wa:
+    scale: 2
+    start_on_create: true
+
+mysql -u appuser -p
+MYSQL_DATABASE: railsapp
+MYSQL_PASSWORD: password
+MYSQL_ROOT_PASSWORD: password
+MYSQL_USER: appuser
+
+CHANGE MASTER TO
+MASTER_HOST = '34.73.103.246',
+MASTER_USER = 'replicator',
+MASTER_PASSWORD = 'pass123',
+MASTER_LOG_FILE = 'mysql-bin.000002',
+MASTER_LOG_POS = 607;
+
+
+CHANGE MASTER TO
+MASTER_HOST = '35.185.79.49',
+MASTER_USER = 'replicator',
+MASTER_PASSWORD = 'pass123',
+MASTER_LOG_FILE = 'mysql-bin.000001',
+MASTER_LOG_POS = 607;

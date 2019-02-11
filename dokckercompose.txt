@@ -1,7 +1,11 @@
-version: '3'
+docker image prune -a
+news no corre en instance-1
+front no corre en instance-4
+//-------
+
+version: '2'
 services:
   sa-apollo-proxy: 
-    container_name: sa-apollo-proxy
     image: diefrodriguezcha/sa_apollo_proxy:latest
     depends_on:
       - sa-apollo-api
@@ -11,13 +15,12 @@ services:
         io.rancher.container.pull_image: always
         io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-apollo-api:
-    container_name: sa-apollo-api
     image: diefrodriguezcha/sa-apollov2-api:latest
     environment:
       PORT: '5000'
       SHOW_URLS: 'true'
       CENTERS_URL: 'sa-centers-ms'
-      CENTERS_ENTRY: 'courses-ms/resources/courses'
+      CENTERS_ENTRY: 'centers-ms/resources/centers'
       CENTERS_PORT: '3001'
       NEWSLETTERS_URL: 'sa-news-ms'
       NEWSLETTERS_PORT: '3002'
@@ -34,7 +37,6 @@ services:
       io.rancher.scheduler.global: true
       io.rancher.container.pull_image: always
   sa-user-db:
-    container_name: sa-user-db
     image: mongo
     ports:
       - 27017:27017
@@ -42,7 +44,6 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-news-db:
-    container_name: sa-news-db
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: railsapp
@@ -54,11 +55,10 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
-  courses-db:
-    container_name: courses-db
+  sa-centers-db:
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: courses-db
+      MYSQL_DATABASE: sa-centers-db
       MYSQL_PASSWORD: '123'
       MYSQL_ROOT_PASSWORD: '123'
       MYSQL_USER: sa
@@ -68,7 +68,6 @@ services:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
   sa-user-ms:
-    container_name: sa-user-ms
     image: diefrodriguezcha/sa_user_ms
     environment:
       DATABASE: '27017'
@@ -87,7 +86,6 @@ services:
       io.rancher.scheduler.global: true
       io.rancher.container.pull_image: always
   sa-news-ms:
-    container_name: sa-news-ms
     image: menoguera/newsletter-api
     command: bundle exec rails s -p 3002 -b '0.0.0.0'
     environment:
@@ -107,14 +105,38 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: nnews=true
       io.rancher.container.pull_image: always
   sa-centers-ms:
-    container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
     depends_on:
-      - courses-db
+      - sa-centers-db
     links:
-      - courses-db
+      - sa-centers-db
     expose:
       - '3001'
     labels:
       io.rancher.scheduler.global: true
       io.rancher.container.pull_image: always
+
+
+/----
+version: '2'
+services:
+  sa-news-db:
+    scale: 2
+    start_on_create: true
+  sa-centers-db:
+    scale: 2
+    start_on_create: true
+  sa-user-ms:
+    start_on_create: true
+  sa-news-ms:
+    start_on_create: true
+  sa-centers-ms:
+    start_on_create: true
+  sa-user-db:
+    scale: 1
+    start_on_create: true
+  sa-apollo-proxy:
+    scale: 1
+    start_on_create: true
+  sa-apollo-api:
+    start_on_create: true
