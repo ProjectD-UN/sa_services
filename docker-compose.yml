@@ -31,7 +31,7 @@ services:
     expose:
       - '5000'
     labels:
-      io.rancher.scheduler.global: true
+      io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-user-db:
     container_name: sa-user-db
@@ -84,7 +84,7 @@ services:
     expose:
       - '3003'
     labels:
-      io.rancher.scheduler.global: true
+      io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-news-ms:
     container_name: sa-news-ms
@@ -103,7 +103,7 @@ services:
     expose:
       - '3002'
     labels:
-      io.rancher.scheduler.global: true
+      io.rancher.scheduler.global: 'true'
       io.rancher.scheduler.affinity:host_label_ne: nnews=true
       io.rancher.container.pull_image: always
   sa-centers-ms:
@@ -116,5 +116,5 @@ services:
     expose:
       - '3001'
     labels:
-      io.rancher.scheduler.global: true
+      io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
