@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   sa-apollo-proxy: 
     container_name: sa-apollo-proxy
@@ -11,6 +11,7 @@ services:
         io.rancher.container.pull_image: always
         io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-apollo-api:
+    container_name: sa-apollo-api
     image: diefrodriguezcha/sa-apollov2-api:latest
     environment:
       PORT: '5000'
@@ -33,6 +34,7 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-user-db:
+    container_name: sa-user-db
     image: mongo
     ports:
       - 27017:27017
@@ -40,6 +42,7 @@ services:
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: hostproxy=true
   sa-news-db:
+    container_name: sa-news-db
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: railsapp
@@ -52,6 +55,7 @@ services:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
   courses-db:
+    container_name: courses-db
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: courses-db
@@ -64,6 +68,7 @@ services:
       io.rancher.scheduler.affinity:host_label: hostdb=true
       io.rancher.container.pull_image: always
   sa-user-ms:
+    container_name: sa-user-ms
     image: diefrodriguezcha/sa_user_ms
     environment:
       DATABASE: '27017'
@@ -82,6 +87,7 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
   sa-news-ms:
+    container_name: sa-news-ms
     image: menoguera/newsletter-api
     command: bundle exec rails s -p 3002 -b '0.0.0.0'
     environment:
@@ -101,6 +107,7 @@ services:
       io.rancher.scheduler.affinity:host_label_ne: nnews=true
       io.rancher.container.pull_image: always
   sa-centers-ms:
+    container_name: sa-centers-ms
     image: dulfrey/sa_centers_ms
     depends_on:
       - courses-db
